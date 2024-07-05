@@ -1,3 +1,5 @@
 {
-  "terminal.integrated.defaultProfile.windows": "Command Prompt"
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  "workbench.iconTheme": "icons",
+  "editor.defaultFormatter": "ms-python.python"
 }
