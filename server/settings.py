@@ -14,7 +14,11 @@ SECRET_KEY = 'django-insecure-p_7)#1-n)g@yje+*i&t6nrw1$vj7-vddnsrxf5x!h@r65+&vpk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    ''amira-server.onrender.com',
+    '0.0.0.0/0'
+]
 
 
 # Application definition
