@@ -16,7 +16,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    ''amira-server.onrender.com',
+    'amira-server.onrender.com',
     '0.0.0.0/0'
 ]
 
