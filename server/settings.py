@@ -64,7 +64,7 @@ WSGI_APPLICATION = 'wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse("postgresql://amira:VyOgWfT1zwDEHI9dJ7eqX0roUX2eWU0i@dpg-cq75bv88fa8c7384qdvg-a/production_monitoring", conn_max_age=600),
+    'default': dj_database_url.parse("postgresql://amira:VyOgWfT1zwDEHI9dJ7eqX0roUX2eWU0i@dpg-cq75bv88fa8c7384qdvg-a.frankfurt-postgres.render.com/production_monitoring", conn_max_age=600),
 }
 
 
