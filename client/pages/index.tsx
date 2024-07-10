@@ -1,7 +1,7 @@
-import Image from 'next/image'
 import Link from 'next/link'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 
-import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form'
@@ -11,6 +11,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { loginFormSchema, loginFormDefaultValues, LoginFormType } from '@/schema/login.form'
 
 export default function Index() {
+  const { push } = useRouter()
+
   const form = useForm<LoginFormType>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: { ...loginFormDefaultValues },
@@ -34,7 +36,7 @@ export default function Index() {
                     <div className='grid gap-2'>
                       <FormLabel htmlFor='email'>Email</FormLabel>
                       <FormControl>
-                        <Input id='email' type='email' placeholder='m@example.com' required {...field} />
+                        <Input id='email' type='email' placeholder='m@example.com' required {...field} autoComplete='off' />
                       </FormControl>
                     </div>
                     <FormMessage />
@@ -58,7 +60,7 @@ export default function Index() {
                 )}
               />
 
-              <Button type='submit' className='w-full mt-4' onClick={form.handleSubmit((data) => console.log(data))}>
+              <Button type='submit' className='w-full mt-4' onClick={form.handleSubmit((data) => push('/dashboard'))}>
                 Login
               </Button>
               <Link href='/forgot-password' className='mx-auto inline-block text-sm underline'>
