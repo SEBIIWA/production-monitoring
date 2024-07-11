@@ -2,20 +2,25 @@ import { type FC } from 'react'
 import { Bell } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 
 interface ComponentProps {}
 
 const HeaderNotifications: FC<ComponentProps> = ({}) => {
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <Sheet>
+      <SheetTrigger asChild>
         <Button size='icon' variant='ghost'>
           <Bell size={21} />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent>this is designated for notificaiton center.</PopoverContent>
-    </Popover>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Are you absolutely sure?</SheetTitle>
+          <SheetDescription>This is designated for notificaiton center.</SheetDescription>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
   )
 }
 

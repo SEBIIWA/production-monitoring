@@ -12,7 +12,7 @@ const HeaderAccountAvatar: FC<ComponentProps> = ({}) => {
       <DropdownMenuTrigger className='min-w-40 outline-none' asChild>
         <div className='flex items-center gap-4 border-l border-r bg-muted h-full px-2'>
           <div className='flex items-center gap-2'>
-            <Image className='w-10 h-10 rounded-full' src='https://randomuser.me/api/portraits/women/10.jpg' alt='avatar' />
+            <Image className='w-10 h-10 rounded-full' src='https://randomuser.me/api/portraits/women/10.jpg' width={40} height={40} alt='avatar' />
             <div className='flex flex-col items-start'>
               <p className='text-sm font-semibold'>Amira Bjaoui</p>
               <p className='text-xs text-gray-500'>Moderator</p>
