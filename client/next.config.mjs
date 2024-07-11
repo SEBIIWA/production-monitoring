@@ -7,6 +7,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'preview.keenthemes.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'amira-server.onrender.app',
+      },
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
+      },
     ],
   },
 }
