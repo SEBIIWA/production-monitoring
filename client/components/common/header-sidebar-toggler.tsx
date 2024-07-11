@@ -1,5 +1,5 @@
 import { type FC } from 'react'
-import { BiMenu } from 'react-icons/bi'
+import { Menu } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
@@ -12,7 +12,7 @@ const HeaderSidebarToggler: FC<ComponentProps> = ({}) => {
 
   return (
     <Button size='icon' variant='ghost' onClick={toggleSidebar}>
-      <BiMenu size={21} />
+      <Menu size={21} />
     </Button>
   )
 }
