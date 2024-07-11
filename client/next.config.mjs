@@ -5,7 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'keenthemes.com',
+        hostname: 'preview.keenthemes.com',
       },
     ],
   },
