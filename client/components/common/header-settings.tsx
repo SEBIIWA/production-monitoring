@@ -1,17 +1,17 @@
 import { type FC } from 'react'
-import { Bell } from 'lucide-react'
+import { Settings } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 
 interface ComponentProps {}
 
-const HeaderNotifications: FC<ComponentProps> = ({}) => {
+const HeaderSettings: FC<ComponentProps> = ({}) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button size='icon' variant='ghost'>
-          <Bell size={21} />
+          <Settings size={21} />
         </Button>
       </SheetTrigger>
       <SheetContent>
@@ -24,4 +24,4 @@ const HeaderNotifications: FC<ComponentProps> = ({}) => {
   )
 }
 
-export { HeaderNotifications }
+export { HeaderSettings }
