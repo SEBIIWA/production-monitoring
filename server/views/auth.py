@@ -27,7 +27,7 @@ def login(request):
     if user.check_password(password):
         token, created = Token.objects.get_or_create(user=user)
         return Response({'token': token.key, 'created': created})
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+    return Response({'detail': 'Incorrect password'}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def logout(request):
