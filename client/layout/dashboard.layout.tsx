@@ -1,5 +1,4 @@
 import { type ReactNode, type FC } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 
 import { useDrawer } from '@/provider/drawer.provider'
 
@@ -16,7 +15,7 @@ const DashboardLayout: FC<ComponentProps> = ({ children }) => {
   return (
     <main className='w-full max-w-full h-full min-h-screen flex bg-muted/40'>
       {sidebarState && (
-        <aside className='bg-foreground flex-1 max-w-[280px] sticky inset-0'>
+        <aside className='bg-[#0d0e12] flex-1 max-w-[280px] sticky inset-0'>
           <DashboardSideBar />
         </aside>
       )}

@@ -1,4 +1,4 @@
-import { createContext, type JSX, type ReactNode, useContext, useLayoutEffect, useState } from 'react'
+import { createContext, type JSX, type ReactNode, useContext, useEffect, useState } from 'react'
 
 import { fetcher } from '@/utils/fetch'
 import { useRouter } from 'next/router'
@@ -58,17 +58,13 @@ function AuthProvider({ children }: ComponentProps): JSX.Element {
       })
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getCurrentUser()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  useLayoutEffect(() => {
-    console.log('is', isUserLoading)
-  }, [isUserLoading])
-
-  if (isUserLoading) {
-    return <div className='w-full h-screen flex items-center justify-center'>loading</div>
-  }
+  // if (isUserLoading) {
+  //   return <div className='w-full h-screen flex items-center justify-center'>loading</div>
+  // }
 
   return <AuthContext.Provider value={{ login, logout, lockScreen, getCurrentUser, currentUser, isAuthenticated }}>{children}</AuthContext.Provider>
 }
