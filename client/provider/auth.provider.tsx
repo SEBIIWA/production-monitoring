@@ -62,9 +62,9 @@ function AuthProvider({ children }: ComponentProps): JSX.Element {
     getCurrentUser()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // if (isUserLoading) {
-  //   return <div className='w-full h-screen flex items-center justify-center'>loading</div>
-  // }
+  if (isUserLoading) {
+    return <div className='w-full h-screen flex items-center justify-center'>loading</div>
+  }
 
   return <AuthContext.Provider value={{ login, logout, lockScreen, getCurrentUser, currentUser, isAuthenticated }}>{children}</AuthContext.Provider>
 }
