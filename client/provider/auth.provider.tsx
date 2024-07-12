@@ -1,4 +1,4 @@
-import { createContext, type JSX, type ReactNode, useContext, useEffect, useLayoutEffect, useState } from 'react'
+import { createContext, type JSX, type ReactNode, useContext, useLayoutEffect, useState } from 'react'
 
 import { fetcher } from '@/utils/fetch'
 import { useRouter } from 'next/router'
@@ -9,10 +9,10 @@ interface ComponentProps {
   children: ReactNode
 }
 
-const UserContext = createContext<AuthStoreType>(authStore)
+const AuthContext = createContext<AuthStoreType>(authStore)
 
 function AuthProvider({ children }: ComponentProps): JSX.Element {
-  const { push, pathname } = useRouter()
+  const { push, replace, pathname } = useRouter()
 
   const [isUserLoading, setUserLoading] = useState<boolean>(true)
   const [currentUser, setCurrentUser] = useState<CurrentUserType>(authStore.currentUser)
@@ -45,37 +45,34 @@ function AuthProvider({ children }: ComponentProps): JSX.Element {
       .then((res) => {
         setCurrentUser(res.data)
         setIsAuthenticated(true)
-
-        // Ensure state updates are complete before redirecting
-        if (pathname === '/' && localStorage.getItem('token')) {
+        if (pathname === '/') {
           push('/dashboard')
         }
-
         setUserLoading(false)
       })
-      .catch((error) => {
+      .catch(() => {
         setIsAuthenticated(false)
-
-        if (pathname.startsWith('/dashboard') && !localStorage.getItem('token')) {
-          push('/')
-        }
-
+        localStorage.removeItem('token')
+        replace('/')
         setUserLoading(false)
-        throw error.response.data
       })
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getCurrentUser()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useLayoutEffect(() => {
+    console.log('is', isUserLoading)
+  }, [isUserLoading])
 
   if (isUserLoading) {
     return <div className='w-full h-screen flex items-center justify-center'>loading</div>
   }
 
-  return <UserContext.Provider value={{ login, logout, lockScreen, getCurrentUser, currentUser, isAuthenticated }}>{children}</UserContext.Provider>
+  return <AuthContext.Provider value={{ login, logout, lockScreen, getCurrentUser, currentUser, isAuthenticated }}>{children}</AuthContext.Provider>
 }
 
-const useAuth = () => useContext(UserContext)
+const useAuth = () => useContext(AuthContext)
 
 export { AuthProvider, useAuth }

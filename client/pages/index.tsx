@@ -6,6 +6,7 @@ import { Fragment, useEffect } from 'react'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '@/components/ui/form'
 
 import { useForm } from 'react-hook-form'
@@ -17,7 +18,8 @@ import { useMutation } from '@tanstack/react-query'
 
 export default function Index() {
   const { push } = useRouter()
-  const { login, getCurrentUser, isAuthenticated } = useAuth()
+  const { toast } = useToast()
+  const { login, getCurrentUser } = useAuth()
 
   const form = useForm<LoginFormType>({
     resolver: zodResolver(loginFormSchema),
@@ -28,7 +30,11 @@ export default function Index() {
     // @ts-ignore
     mutationFn: async (data: LoginFormType) => login(data),
     onError: (error: LoginErrorResponseType) => {
-      alert(error.detail)
+      toast({
+        variant: 'destructive',
+        title: 'Error Login',
+        description: error.detail,
+      })
     },
     onSuccess: (data: LoginResponseType) => {
       localStorage.setItem('token', data.token)

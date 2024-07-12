@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 
 import { useRouter } from 'next/router'
+import { Toaster } from '@/components/ui/toaster'
 import { DashboardLayout } from '@/layout/dashboard.layout'
 
 import { DashboardProvider } from '@/provider/drawer.provider'
@@ -29,6 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <AuthProvider>
         <DashboardProvider>{layout()}</DashboardProvider>
       </AuthProvider>
+      <Toaster />
     </QueryClientProvider>
   )
 }
