@@ -2,11 +2,15 @@ import { type FC } from 'react'
 import Image from 'next/image'
 import { FolderLock, ListTodo, LogOut, Settings, UserRound } from 'lucide-react'
 
+import { useAuth } from '@/provider/auth.provider'
+
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuShortcut } from '@/components/ui/dropdown-menu'
 
 interface ComponentProps {}
 
 const HeaderAccountAvatar: FC<ComponentProps> = ({}) => {
+  const { currentUser, logout } = useAuth()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className='min-w-40 outline-none' asChild>
@@ -14,7 +18,7 @@ const HeaderAccountAvatar: FC<ComponentProps> = ({}) => {
           <div className='flex items-center gap-2'>
             <Image className='w-10 h-10 rounded-full' src='https://randomuser.me/api/portraits/women/10.jpg' width={40} height={40} alt='avatar' />
             <div className='flex flex-col items-start'>
-              <p className='text-sm font-semibold'>Amira Bjaoui</p>
+              <p className='text-sm font-semibold'>{currentUser.username}</p>
               <p className='text-xs text-gray-500'>Moderator</p>
             </div>
           </div>
@@ -48,7 +52,7 @@ const HeaderAccountAvatar: FC<ComponentProps> = ({}) => {
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={logout}>
           Log out
           <DropdownMenuShortcut>
             <LogOut size={18} />

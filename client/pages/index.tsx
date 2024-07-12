@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import Head from 'next/head'
-import { Fragment } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { Fragment, useEffect } from 'react'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -12,12 +12,29 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginFormSchema, loginFormDefaultValues, LoginFormType } from '@/schema/login.form'
 
+import { useAuth } from '@/provider/auth.provider'
+import { useMutation } from '@tanstack/react-query'
+
 export default function Index() {
   const { push } = useRouter()
+  const { login, getCurrentUser, isAuthenticated } = useAuth()
 
   const form = useForm<LoginFormType>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: { ...loginFormDefaultValues },
+  })
+
+  const { mutate } = useMutation({
+    // @ts-ignore
+    mutationFn: async (data: LoginFormType) => login(data),
+    onError: (error: LoginErrorResponseType) => {
+      alert(error.detail)
+    },
+    onSuccess: (data: LoginResponseType) => {
+      localStorage.setItem('token', data.token)
+      getCurrentUser() // Fetch current user based on token
+      push('/dashboard') // Redirect to dashboard route
+    },
   })
 
   return (
@@ -36,13 +53,13 @@ export default function Index() {
               <div className='grid gap-4'>
                 <FormField
                   control={form.control}
-                  name='email'
+                  name='username'
                   render={({ field }) => (
                     <FormItem>
                       <div className='grid gap-2'>
-                        <FormLabel htmlFor='email'>Email</FormLabel>
+                        <FormLabel htmlFor='username'>Username</FormLabel>
                         <FormControl>
-                          <Input id='email' type='email' placeholder='m@example.com' required {...field} autoComplete='off' />
+                          <Input id='username' type='text' placeholder='Enter your username' required {...field} autoComplete='off' />
                         </FormControl>
                       </div>
                       <FormMessage />
@@ -66,7 +83,7 @@ export default function Index() {
                   )}
                 />
 
-                <Button type='submit' className='w-full mt-4' onClick={form.handleSubmit((data) => push('/dashboard'))}>
+                <Button type='submit' className='w-full mt-4' onClick={form.handleSubmit((data) => mutate(data))}>
                   Login
                 </Button>
                 <Link href='/forgot-password' className='mx-auto inline-block text-sm underline'>

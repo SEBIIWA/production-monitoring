@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { DashboardLayout } from '@/layout/dashboard.layout'
 
 import { DashboardProvider } from '@/provider/drawer.provider'
+import { AuthProvider } from '@/provider/auth.provider'
 
 import { queryClient } from '@/utils/query-client'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -25,7 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <DashboardProvider>{layout()}</DashboardProvider>
+      <AuthProvider>
+        <DashboardProvider>{layout()}</DashboardProvider>
+      </AuthProvider>
     </QueryClientProvider>
   )
 }
