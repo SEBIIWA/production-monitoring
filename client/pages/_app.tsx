@@ -6,6 +6,9 @@ import { DashboardLayout } from '@/layout/dashboard.layout'
 
 import { DashboardProvider } from '@/provider/drawer.provider'
 
+import { queryClient } from '@/utils/query-client'
+import { QueryClientProvider } from '@tanstack/react-query'
+
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()
 
@@ -20,5 +23,9 @@ export default function App({ Component, pageProps }: AppProps) {
     return <Component {...pageProps} />
   }
 
-  return <DashboardProvider>{layout()}</DashboardProvider>
+  return (
+    <QueryClientProvider client={queryClient}>
+      <DashboardProvider>{layout()}</DashboardProvider>
+    </QueryClientProvider>
+  )
 }
