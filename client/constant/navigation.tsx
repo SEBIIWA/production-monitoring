@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react'
 
-import { Calendar, LayoutDashboard, ListTodo, Mail, Users } from 'lucide-react'
+import { Calendar, LayoutDashboard, ListTodo, Mail, Users, SquareKanban } from 'lucide-react'
 
 export type SideBarNavigationType = {
   title: string
@@ -31,6 +31,12 @@ const SIDEBAR_NAVIGATION: SideBarNavigationItem[] = [
   {
     section: 'Task',
     children: [
+      {
+        title: 'Board',
+        icon: <SquareKanban size={18} />,
+        path: '/dashboard/board',
+        ability: ['*'],
+      },
       {
         title: 'Calendar',
         icon: <Calendar size={18} />,
