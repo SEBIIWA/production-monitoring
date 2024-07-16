@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { type ReactNode, type FC } from 'react'
 
 import { useDrawer } from '@/provider/drawer.provider'
@@ -14,6 +15,9 @@ const DashboardLayout: FC<ComponentProps> = ({ children }) => {
 
   return (
     <main className='w-full max-w-full h-full min-h-screen flex bg-muted/40'>
+      <Head>
+        <title>Dashboard</title>
+      </Head>
       {sidebarState && (
         <aside className='bg-[#0d0e12] flex-1 max-w-[280px] sticky inset-0'>
           <DashboardSideBar />
