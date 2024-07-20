@@ -5,9 +5,9 @@ from views.auth import me, login, logout, register
 
 
 urlpatterns = [
+    path('/', admin.site.urls),
     path('me', me),
     path('login', login),
     path('logout', logout),
     path('register', register),
-    path('/', admin.site.urls),
 ]
