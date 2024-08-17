@@ -21,7 +21,7 @@ function AuthProvider({ children }: ComponentProps): JSX.Element {
 
   const login = async (data: LoginFormType) =>
     await fetcher
-      .post('/login', { ...data })
+      .post('login', { ...data })
       .then((res) => res.data)
       .catch((error) => {
         throw error.response.data
@@ -37,7 +37,7 @@ function AuthProvider({ children }: ComponentProps): JSX.Element {
 
   const getCurrentUser = () => {
     fetcher
-      .get('/me', {
+      .get('me', {
         headers: {
           Authorization: `token ${localStorage.getItem('token')}`,
         },
@@ -59,7 +59,7 @@ function AuthProvider({ children }: ComponentProps): JSX.Element {
   }
 
   useEffect(() => {
-    getCurrentUser()
+    // getCurrentUser()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // if (isUserLoading) {

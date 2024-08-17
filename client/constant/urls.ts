@@ -1,3 +1,3 @@
-const SERVER_URL: string = 'https://amira-server.onrender.com'
+const SERVER_URL: string = 'http://localhost:8000/'
 
 export { SERVER_URL }
