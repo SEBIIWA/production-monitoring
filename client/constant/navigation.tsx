@@ -1,13 +1,12 @@
 import { type ReactElement } from 'react'
 
-import { Calendar, LayoutDashboard, ListTodo, Mail, Users, SquareKanban } from 'lucide-react'
+import { Calendar, LayoutDashboard, ListTodo, Mail, Users, SquareKanban, BarChartBig, Cuboid, Component } from 'lucide-react'
 
 export type SideBarNavigationType = {
   title: string
   icon: ReactElement
   path: string
   badge?: number
-  ability: string[]
 }
 
 export type SideBarNavigationItem = {
@@ -23,11 +22,29 @@ const SIDEBAR_NAVIGATION: SideBarNavigationItem[] = [
         title: 'Dashboard',
         icon: <LayoutDashboard size={18} />,
         path: '/dashboard',
-        ability: ['*'],
+      },
+      {
+        title: 'updates',
+        icon: <BarChartBig size={18} />,
+        path: '/dashboard/updates',
       },
     ],
   },
-
+  {
+    section: 'development',
+    children: [
+      {
+        title: 'Products',
+        icon: <Cuboid size={18} />,
+        path: '/dashboard/products',
+      },
+      {
+        title: 'Components',
+        icon: <Component size={18} />,
+        path: '/dashboard/components',
+      },
+    ],
+  },
   {
     section: 'Task',
     children: [
@@ -35,20 +52,17 @@ const SIDEBAR_NAVIGATION: SideBarNavigationItem[] = [
         title: 'Board',
         icon: <SquareKanban size={18} />,
         path: '/dashboard/board',
-        ability: ['*'],
       },
       {
         title: 'Calendar',
         icon: <Calendar size={18} />,
         path: '/dashboard/calendar',
-        ability: ['*'],
       },
       {
         title: 'Tasks',
         icon: <ListTodo size={18} />,
         path: '/dashboard/tasks',
         badge: 105,
-        ability: ['*'],
       },
     ],
   },
@@ -60,7 +74,6 @@ const SIDEBAR_NAVIGATION: SideBarNavigationItem[] = [
         icon: <Mail size={18} />,
         path: '/dashboard/messages',
         badge: 3,
-        ability: ['*'],
       },
     ],
   },
@@ -71,7 +84,6 @@ const SIDEBAR_NAVIGATION: SideBarNavigationItem[] = [
         title: 'users',
         icon: <Users size={18} />,
         path: '/dashboard/users',
-        ability: ['*'],
       },
     ],
   },

@@ -20,7 +20,7 @@ const DashboardLayout: FC<ComponentProps> = ({ children }) => {
         <title>Dashboard</title>
       </Head>
       {sidebarState && (
-        <aside className='bg-[#0d0e12] flex-1 max-w-[280px] sticky inset-0'>
+        <aside className='bg-foreground flex-1 max-w-[280px] sticky inset-0'>
           <DashboardSideBar />
         </aside>
       )}

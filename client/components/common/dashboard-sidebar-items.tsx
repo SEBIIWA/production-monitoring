@@ -16,10 +16,11 @@ const DashboardSideBarItems: FC<ComponentProps> = ({}) => {
     <nav className='p-4 grid gap-6'>
       {SIDEBAR_NAVIGATION.map((item: SideBarNavigationItem, index) => (
         <div key={index}>
-          <p className='text-[#53565e] capitalize mb-1 text-sm'>{item.section}</p>
+          <p className='text-[#53565e] capitalize mb-2 text-sm'>{item.section}</p>
           <div>
             {item.children.map((item: SideBarNavigationType, index: number) => (
               <Link
+                passHref
                 key={index}
                 href={item.path}
                 className={cn(
