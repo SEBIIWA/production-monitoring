@@ -25,7 +25,7 @@ const DashboardLayout: FC<ComponentProps> = ({ children }) => {
         </aside>
       )}
 
-      <article className='flex-1 flex flex-col items-center'>
+      <article className='flex-1 bg-background flex flex-col items-center'>
         <header className='bg-background w-full border-b shadow-sm h-16 sticky top-0 z-10'>
           <DashboardHeader />
         </header>

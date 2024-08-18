@@ -12,40 +12,9 @@ interface ComponentProps {
 const ProductsContext = createContext<ProductStoreType>(productStore)
 
 function ProductsProvider({ children }: ComponentProps): JSX.Element {
-  const [products, setProducts] = useState<ProductType[] | null>(productStore.products)
-  const [product, setProduct] = useState<ProductType | null>(productStore.product)
-
-  const getProducts = async (deleted: boolean) =>
-    await fetcher
-      .get('api/products/')
-      .then((res) => {
-        setProducts(res.data)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-
-  function getProduct(id: number) {
-    fetcher
-      .get(`api/products/${id}`)
-      .then((res) => {
-        setProduct(res.data)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
-
-  function createProduct(data: ProductFormType) {
-    fetcher
-      .post('api/products', { ...data })
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
+  const getProducts = async () => await fetcher.get('api/products/').then((res) => res.data)
+  const getProduct = async (id: number) => await fetcher.get(`api/products/${id}`).then((res) => res.data)
+  const createProduct = (data: ProductFormType) => fetcher.post('api/products/', { ...data }).then((res) => res.data)
 
   function updateProduct(id: number, data: ProductFormType) {
     fetcher
@@ -69,15 +38,9 @@ function ProductsProvider({ children }: ComponentProps): JSX.Element {
       })
   }
 
-  useEffect(() => {
-    getProducts(false)
-  }, [])
-
   return (
     <ProductsContext.Provider
       value={{
-        products,
-        product,
         getProducts,
         getProduct,
         createProduct,

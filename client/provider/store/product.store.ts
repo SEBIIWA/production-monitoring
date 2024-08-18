@@ -1,9 +1,7 @@
 import { ProductFormType } from '@/schema/product.form'
 
 export interface ProductStoreType {
-  products: ProductType[] | null
-  product: ProductType | null
-  getProducts: (deleted: false) => void
+  getProducts: () => Promise<ProductType[]>
   getProduct: (id: number) => void
   createProduct: (data: ProductFormType) => void
   updateProduct: (id: number, data: ProductFormType) => void
@@ -11,9 +9,7 @@ export interface ProductStoreType {
 }
 
 export const productStore: ProductStoreType = {
-  products: null,
-  product: null,
-  getProducts: (deleted: false) => {},
+  getProducts: async () => [],
   getProduct: (id: number) => {},
   createProduct: (data: ProductFormType) => {},
   updateProduct: (id: number, data: ProductFormType) => {},

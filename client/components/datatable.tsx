@@ -1,4 +1,4 @@
-import { type JSX, type PropsWithChildren, useMemo, useState } from 'react'
+import { type JSX, type PropsWithChildren, type ReactNode, useMemo, useState } from 'react'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -24,9 +24,10 @@ import {
 interface ComponentProps<T> {
   data: T[]
   columns: ColumnDef<T>[]
+  filterOptions?: ReactNode[]
 }
 
-export function DataTable<T>({ data, columns }: PropsWithChildren<ComponentProps<T>>): JSX.Element {
+export function DataTable<T>({ data, columns, filterOptions }: PropsWithChildren<ComponentProps<T>>): JSX.Element {
   const cols = useMemo<ColumnDef<T>[]>(() => [...columns], [columns])
 
   const [sorting, setSorting] = useState<SortingState>([])
@@ -75,25 +76,28 @@ export function DataTable<T>({ data, columns }: PropsWithChildren<ComponentProps
           }
           className='max-w-sm'
         />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='ml-auto'>
-              Columns <ChevronDownIcon className='ml-2' size={18} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem key={column.id} className='capitalize' checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className='flex items-center justify-end flex-1'>
+          {filterOptions && filterOptions.map((option, index) => <div key={index}>{option}</div>)}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline' className='ml-auto'>
+                Columns <ChevronDownIcon className='ml-2' size={18} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem key={column.id} className='capitalize' checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)}>
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  )
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className='rounded-md border'>
         <Table>
