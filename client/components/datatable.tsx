@@ -25,9 +25,10 @@ interface ComponentProps<T> {
   data: T[]
   columns: ColumnDef<T>[]
   filterOptions?: ReactNode[]
+  hiddenColumns?: string[]
 }
 
-export function DataTable<T>({ data, columns, filterOptions }: PropsWithChildren<ComponentProps<T>>): JSX.Element {
+export function DataTable<T>({ data, columns, filterOptions, hiddenColumns = [] }: PropsWithChildren<ComponentProps<T>>): JSX.Element {
   const cols = useMemo<ColumnDef<T>[]>(() => [...columns], [columns])
 
   const [sorting, setSorting] = useState<SortingState>([])
@@ -47,6 +48,7 @@ export function DataTable<T>({ data, columns, filterOptions }: PropsWithChildren
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
     rowCount: data.length,
+    enableHiding: true,
     state: {
       sorting: sorting,
       pagination: pagination,
@@ -76,11 +78,11 @@ export function DataTable<T>({ data, columns, filterOptions }: PropsWithChildren
           }
           className='max-w-sm'
         />
-        <div className='flex items-center justify-end flex-1'>
+        <div className='flex items-center justify-end space-x-2 flex-1'>
           {filterOptions && filterOptions.map((option, index) => <div key={index}>{option}</div>)}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant='outline' className='ml-auto'>
+              <Button variant='outline'>
                 Columns <ChevronDownIcon className='ml-2' size={18} />
               </Button>
             </DropdownMenuTrigger>

@@ -1,6 +1,6 @@
 import { type JSX } from 'react'
 import { useRouter } from 'next/router'
-import { FilePlus2Icon } from 'lucide-react'
+import { FilePlus2Icon, PlusCircle, Trash2 } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 
 import { Button } from '@/components/ui/button'
@@ -23,7 +23,7 @@ export default function Index(): JSX.Element {
     <main className='h-full flex flex-1 flex-col gap-4 px-4 lg:gap-6'>
       <div className='flex items-center justify-between'>
         <div className='flex flex-col items-start'>
-          <h1 className='text-lg font-semibold md:text-2xl'>Inventory</h1>
+          <h1 className='text-lg font-semibold md:text-2xl'>Products</h1>
           <p className='text-muted-foreground'>Manage your products and view their sales performance.</p>
         </div>
         {data && data.length !== 0 && (
@@ -46,7 +46,21 @@ export default function Index(): JSX.Element {
           </div>
         </div>
       ) : (
-        <div>{data && <DataTable<ProductType> data={data} columns={productHeaderColumns} />}</div>
+        <div>
+          {data && (
+            <DataTable<ProductType>
+              data={data}
+              columns={productHeaderColumns}
+              filterOptions={[
+                <Button key='btn-status' variant={'ghost'} className='border border-dashed'>
+                  <PlusCircle size={18} className='mr-2' />
+                  Status
+                </Button>,
+              ]}
+              hiddenColumns={['description', 'Updated_At']}
+            />
+          )}
+        </div>
       )}
     </main>
   )

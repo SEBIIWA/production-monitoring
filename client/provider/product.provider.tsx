@@ -15,28 +15,8 @@ function ProductsProvider({ children }: ComponentProps): JSX.Element {
   const getProducts = async () => await fetcher.get('api/products/').then((res) => res.data)
   const getProduct = async (id: number) => await fetcher.get(`api/products/${id}`).then((res) => res.data)
   const createProduct = (data: ProductFormType) => fetcher.post('api/products/', { ...data }).then((res) => res.data)
-
-  function updateProduct(id: number, data: ProductFormType) {
-    fetcher
-      .put(`api/products/${id}`, { ...data })
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
-
-  function deleteProduct(id: number, soft: boolean) {
-    fetcher
-      .delete(`api/products/${id}`)
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
+  const updateProduct = (id: number, data: ProductFormType) => fetcher.put(`api/products/${id}`, { ...data }).then((res) => res.data)
+  const deleteProduct = (id: number, soft: boolean) => fetcher.delete(`api/products/${id}`).then((res) => res.data)
 
   return (
     <ProductsContext.Provider
