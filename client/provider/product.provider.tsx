@@ -1,4 +1,4 @@
-import { type JSX, type ReactNode, useContext, useEffect, useState } from 'react'
+import { type JSX, type ReactNode, useContext } from 'react'
 import { createContext } from 'react'
 
 import { fetcher } from '@/utils/fetch'
