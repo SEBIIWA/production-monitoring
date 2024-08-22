@@ -13,6 +13,7 @@ import {
   type SortingState,
   type VisibilityState,
   type ColumnFiltersState,
+  type GlobalFilterTableState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -34,7 +35,7 @@ export function DataTable<T>({ data, columns, filterOptions, hiddenColumns = [] 
   const [sorting, setSorting] = useState<SortingState>([])
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [globalFilters, setGlobalFilters] = useState<string>('')
 
   const table = useReactTable({
     data,
@@ -46,14 +47,14 @@ export function DataTable<T>({ data, columns, filterOptions, hiddenColumns = [] 
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     onColumnVisibilityChange: setColumnVisibility,
-    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilters,
     rowCount: data.length,
     enableHiding: true,
     state: {
       sorting: sorting,
       pagination: pagination,
       columnVisibility: columnVisibility,
-      columnFilters: columnFilters,
+      globalFilter: globalFilters,
     },
     autoResetPageIndex: false,
   })
@@ -61,23 +62,7 @@ export function DataTable<T>({ data, columns, filterOptions, hiddenColumns = [] 
   return (
     <div className='w-full'>
       <div className='flex items-center py-4'>
-        <Input
-          placeholder='Filter columns...'
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setColumnFilters(
-              table.getAllColumns().reduce((acc, column) => {
-                if (column.columnDef.enableColumnFilter) {
-                  acc.push({
-                    id: column.id,
-                    value: event.target.value,
-                  })
-                }
-                return acc
-              }, [] as ColumnFiltersState)
-            )
-          }
-          className='max-w-sm'
-        />
+        <Input placeholder='Filter columns...' onChange={(event: React.ChangeEvent<HTMLInputElement>) => setGlobalFilters(event.target.value)} className='max-w-sm' />
         <div className='flex items-center justify-end space-x-2 flex-1'>
           {filterOptions && filterOptions.map((option, index) => <div key={index}>{option}</div>)}
           <DropdownMenu>
