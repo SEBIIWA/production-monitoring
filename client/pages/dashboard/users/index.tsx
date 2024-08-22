@@ -14,7 +14,7 @@ export default function Page(): JSX.Element {
   const { push } = useRouter()
   const { getUsers } = useUsers()
 
-  const [filter, setFilter] = useState<FilterType>({ active: true } as FilterType)
+  const [filter, setFilter] = useState<FilterType>({} as FilterType)
 
   const { isLoading, isError, data } = useQuery({
     queryKey: ['users'],
@@ -30,9 +30,8 @@ export default function Page(): JSX.Element {
   const filteredData =
     data?.filter((user) => {
       const roleMatch = filter.role ? user.role.toLocaleLowerCase() === filter.role.toLocaleLowerCase() : true
-      const activeMatch = filter.active !== undefined ? user.is_active === filter.active : true
 
-      return roleMatch && activeMatch
+      return roleMatch
     }) || []
 
   return (
@@ -102,15 +101,6 @@ export default function Page(): JSX.Element {
                     </DropdownMenuCheckboxItem>
                   </DropdownMenuContent>
                 </DropdownMenu>,
-                <Select key='active-role' defaultValue={filter.active ? '1' : '0'} onValueChange={(value) => setFilter({ ...filter, active: value === '1' ? true : false })}>
-                  <SelectTrigger className='w-[100px]'>
-                    <SelectValue placeholder='Status' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value='1'>Active</SelectItem>
-                    <SelectItem value='0'>Disabled</SelectItem>
-                  </SelectContent>
-                </Select>,
               ]}
             />
           )}

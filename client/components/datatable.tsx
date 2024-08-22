@@ -12,8 +12,6 @@ import {
   type ColumnDef,
   type SortingState,
   type VisibilityState,
-  type ColumnFiltersState,
-  type GlobalFilterTableState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
