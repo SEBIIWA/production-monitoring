@@ -51,6 +51,7 @@ export const userHeaderColumns: ColumnDef<UserType>[] = [
     id: 'role',
     header: 'Role',
     accessorKey: 'role',
+    cell: ({ row }) => <Badge variant='outline'>{row.original.role}</Badge>,
     enableGlobalFilter: false,
     enableSorting: false,
     enableHiding: false,
