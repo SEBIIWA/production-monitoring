@@ -2,16 +2,16 @@ import { UserFormType } from '@/schema/user.form'
 
 export interface UserStoreType {
   getUsers: () => Promise<UserType[]>
-  getUser: (id: number) => void
+  getUser: (id: string) => Promise<UserType>
   createUser: (data: UserFormType) => void
-  updateUser: (id: number, data: UserFormType) => void
-  deleteUser: (id: number, soft: boolean) => void
+  updateUser: (id: string, data: UserFormType) => void
+  deleteUser: (id: string, soft: boolean) => void
 }
 
 export const userStore: UserStoreType = {
   getUsers: async () => [],
-  getUser: (id: number) => {},
+  getUser: async (id: string) => ({} as UserType),
   createUser: (data: UserFormType) => {},
-  updateUser: (id: number, data: UserFormType) => {},
-  deleteUser: (id: number, soft: boolean) => {},
+  updateUser: (id: string, data: UserFormType) => {},
+  deleteUser: (id: string, soft: boolean) => {},
 }

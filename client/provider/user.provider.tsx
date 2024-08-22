@@ -12,7 +12,7 @@ const UsersContext = createContext<UserStoreType>(userStore)
 
 function UsersProvider({ children }: ComponentProps): JSX.Element {
   const getUsers = async () => await fetcher.get('api/users/').then((res) => res.data)
-  const getUser = async (id: number) => await fetcher.get(`api/users/${id}/`).then((res) => res.data)
+  const getUser = async (id: string) => await fetcher.get(`api/users/${id}/`).then((res) => res.data)
   const createUser = (data: UserFormType) =>
     fetcher
       .post(
@@ -25,7 +25,7 @@ function UsersProvider({ children }: ComponentProps): JSX.Element {
         }
       )
       .then((res) => res.data)
-  const updateUser = (id: number, data: UserFormType) =>
+  const updateUser = (id: string, data: UserFormType) =>
     fetcher
       .put(
         `api/users/${id}/`,
@@ -37,7 +37,7 @@ function UsersProvider({ children }: ComponentProps): JSX.Element {
         }
       )
       .then((res) => res.data)
-  const deleteUser = (id: number) => fetcher.delete(`api/users/${id}/`).then((res) => res.data)
+  const deleteUser = (id: string) => fetcher.delete(`api/users/${id}/`).then((res) => res.data)
 
   return (
     <UsersContext.Provider

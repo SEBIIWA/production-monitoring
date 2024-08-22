@@ -5,7 +5,7 @@ export const userFormSchema = z.object({
   last_name: z.string(),
   cin: z.string(),
   telephone: z.string(),
-  username: z.string(),
+  username: z.string().max(20),
   password: z.string().min(6),
   role: z.string().optional().default('EMPLOYEE'),
   profile_picture: z.string().optional().nullable(),
@@ -29,7 +29,7 @@ export const userFormDefaultValues: UserFormType = {
   password: '',
   role: 'EMPLOYEE',
   profile_picture: '',
-  is_active: true,
+  is_active: false,
 }
 
 export const loginFormDefaultValues: UserLoginType = {
