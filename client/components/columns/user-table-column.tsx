@@ -102,10 +102,10 @@ export const userHeaderColumns: ColumnDef<UserType>[] = [
 
 const UserTableActions = ({ row }: { row: Row<UserType> }) => {
   const { toast } = useToast()
-  const { updateUser } = useUsers()
+  const { patchUser } = useUsers()
 
   const { mutate } = useMutation({
-    mutationFn: async (data: UserType) => updateUser(row.original.id.toString(), { ...data, profile_picture: data.profile_picture as unknown as File }),
+    mutationFn: async (data: UserType) => patchUser(row.original.id.toString(), { is_active: data.is_active }),
     onError: (error) => {
       toast({
         variant: 'destructive',

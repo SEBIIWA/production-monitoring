@@ -10,7 +10,7 @@ type UserType = UserLoginType & {
   cin: string
   telephone: string
   role: 'EMPLOYEE' | 'ADMIN' | 'MODERATOR'
-  profile_picture: string
+  profile_picture?: string
   is_active: boolean
   created_at: string
 }

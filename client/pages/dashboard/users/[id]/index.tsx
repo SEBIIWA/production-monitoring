@@ -17,6 +17,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ChevronLeft } from 'lucide-react'
 import { FileInput, FileUploader, FileUploaderContent, FileUploaderItem } from '@/components/ui/file'
 import Image from 'next/image'
+import { queryClient } from '@/utils/query-client'
 
 export default function Page(): JSX.Element {
   const { push, query } = useRouter()
@@ -33,29 +34,33 @@ export default function Page(): JSX.Element {
     queryKey: ['user', query.id],
     queryFn: async () => getUser(query.id as string),
     enabled: query.id !== 'new' && query.id !== undefined,
+    staleTime: 0,
   })
 
   useEffect(() => {
     if (query.id !== 'new' && status === 'success') {
-      form.reset({ ...data, profile_picture: null, password: '' })
+      form.reset({ ...data, profile_picture: null })
     }
-  }, [query.id]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [query.id, status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const { mutate } = useMutation({
     mutationFn: async (data: UserFormType) => (query.id === 'new' ? createUser(data) : updateUser(query.id as string, data)),
     onError: (error) => {
       toast({
         variant: 'destructive',
-        title: 'Error Creating User',
+        title: 'Error mutating a user',
         description: error.message,
       })
     },
     onSuccess: () => {
       toast({
-        title: 'Product Created',
-        description: 'User has been successfully created.',
+        title: query.id === 'new' ? 'User Created' : 'User Updated',
+        description: `User has been successfully ${query.id === 'new' ? 'created' : 'updated'}.`,
       })
       push('/dashboard/users')
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries()
     },
   })
 
@@ -74,9 +79,17 @@ export default function Page(): JSX.Element {
             <p className='text-muted-foreground'>{query.id !== 'new' ? 'Update the user' : 'Create a new User'}</p>
           </div>
           <div className='space-x-2'>
-            <Button type='submit' onClick={form.handleSubmit((data) => mutate(data))}>
-              Submit
-            </Button>
+            {query.id !== 'new' && <Button variant='destructive'>Delete</Button>}
+            {query.id === 'new' && (
+              <Button type='submit' onClick={form.handleSubmit((data) => mutate(data))}>
+                Submit
+              </Button>
+            )}
+            {query.id !== 'new' && (
+              <Button type='submit' onClick={form.handleSubmit((data) => mutate(data))}>
+                Update
+              </Button>
+            )}
           </div>
         </div>
 
@@ -115,7 +128,6 @@ export default function Page(): JSX.Element {
             <FormField
               control={form.control}
               name='username'
-              disabled={query.id !== 'new'}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>

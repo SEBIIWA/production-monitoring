@@ -37,6 +37,19 @@ function UsersProvider({ children }: ComponentProps): JSX.Element {
         }
       )
       .then((res) => res.data)
+
+  const patchUser = (id: string, data: Partial<UserFormType>) =>
+    fetcher
+      .patch(
+        `api/users/${id}/`,
+        { ...data },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
+      .then((res) => res.data)
   const deleteUser = (id: string) => fetcher.delete(`api/users/${id}/`).then((res) => res.data)
 
   return (
@@ -46,6 +59,7 @@ function UsersProvider({ children }: ComponentProps): JSX.Element {
         getUser,
         createUser,
         updateUser,
+        patchUser,
         deleteUser,
       }}>
       {children}
