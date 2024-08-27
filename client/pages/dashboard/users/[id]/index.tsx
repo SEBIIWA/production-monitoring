@@ -15,11 +15,19 @@ import { userFormSchema, userFormDefaultValues, UserFormType } from '@/schema/us
 import { useUsers } from '@/provider/user.provider'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ChevronLeft } from 'lucide-react'
+import { FileInput, FileUploader, FileUploaderContent, FileUploaderItem } from '@/components/ui/file'
+import Image from 'next/image'
 
 export default function Page(): JSX.Element {
   const { push, query } = useRouter()
   const { toast } = useToast()
   const { updateUser, createUser, getUser } = useUsers()
+
+  const form = useForm<UserFormType>({
+    resolver: zodResolver(userFormSchema),
+    defaultValues: { ...userFormDefaultValues },
+    mode: 'onChange',
+  })
 
   const { data, status } = useQuery({
     queryKey: ['user', query.id],
@@ -29,15 +37,9 @@ export default function Page(): JSX.Element {
 
   useEffect(() => {
     if (query.id !== 'new' && status === 'success') {
-      form.reset({ ...data })
+      form.reset({ ...data, profile_picture: null, password: '' })
     }
   }, [query.id]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const form = useForm<UserFormType>({
-    resolver: zodResolver(userFormSchema),
-    defaultValues: { ...userFormDefaultValues },
-    mode: 'onChange',
-  })
 
   const { mutate } = useMutation({
     mutationFn: async (data: UserFormType) => (query.id === 'new' ? createUser(data) : updateUser(query.id as string, data)),
@@ -224,6 +226,35 @@ export default function Page(): JSX.Element {
                 </FormItem>
               )}
             />
+            {/*  */}
+            <FormField
+              control={form.control}
+              name='profile_picture'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Profile Picture</FormLabel>
+                  <FormControl>
+                    <FileUploader value={field.value} onValueChange={field.onChange} dropzoneOptions={{ multiple: false, maxFiles: 1, maxSize: 4 * 1024 * 1024 }}>
+                      <FileInput>
+                        <div className='flex items-center justify-center h-32 w-full border bg-background rounded-md'>
+                          <p className='text-gray-400'>Drop files here</p>
+                        </div>
+                      </FileInput>
+                      <FileUploaderContent className='flex items-center flex-row gap-2'>
+                        {field.value && (
+                          <FileUploaderItem index={1} className='size-20 p-0 rounded-md overflow-hidden'>
+                            <Image src={URL.createObjectURL(field.value)} alt={field.value.name} height={80} width={80} className='size-20 p-0' />
+                          </FileUploaderItem>
+                        )}
+                      </FileUploaderContent>
+                    </FileUploader>
+                  </FormControl>
+                  <FormDescription>This is the name of the product.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/*  */}
           </div>
         </aside>
       </main>

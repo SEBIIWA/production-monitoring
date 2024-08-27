@@ -8,7 +8,12 @@ export const userFormSchema = z.object({
   username: z.string().max(20),
   password: z.string().min(6),
   role: z.string().optional().default('EMPLOYEE'),
-  profile_picture: z.string().optional().nullable(),
+  profile_picture: z
+    .instanceof(File)
+    .refine((file) => file.size < 4 * 1024 * 1024, {
+      message: 'File size must be less than 4MB',
+    })
+    .nullable(),
   is_active: z.boolean().optional().default(true),
 })
 
@@ -28,7 +33,7 @@ export const userFormDefaultValues: UserFormType = {
   username: '',
   password: '',
   role: 'EMPLOYEE',
-  profile_picture: '',
+  profile_picture: null,
   is_active: false,
 }
 

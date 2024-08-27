@@ -11,7 +11,7 @@ import { CaretSortIcon } from '@radix-ui/react-icons'
 
 import { useUsers } from '@/provider/user.provider'
 import { useMutation } from '@tanstack/react-query'
-import { useState } from 'react'
+import { queryClient } from '@/utils/query-client'
 
 export const userHeaderColumns: ColumnDef<UserType>[] = [
   {
@@ -94,7 +94,6 @@ export const userHeaderColumns: ColumnDef<UserType>[] = [
     header: () => <div className='flex items-center justify-end'>Actions</div>,
     accessorKey: 'id',
     cell: ({ row }) => <UserTableActions row={row} />,
-
     enableGlobalFilter: false,
     enableSorting: false,
     enableHiding: false,
@@ -106,7 +105,7 @@ const UserTableActions = ({ row }: { row: Row<UserType> }) => {
   const { updateUser } = useUsers()
 
   const { mutate } = useMutation({
-    mutationFn: async (data: UserType) => updateUser(row.original.id, data),
+    mutationFn: async (data: UserType) => updateUser(row.original.id.toString(), { ...data, profile_picture: data.profile_picture as unknown as File }),
     onError: (error) => {
       toast({
         variant: 'destructive',
@@ -120,6 +119,9 @@ const UserTableActions = ({ row }: { row: Row<UserType> }) => {
         title: 'User Updated',
         description: 'User has been successfully updated.',
       })
+    },
+    onSettled: () => {
+      queryClient.refetchQueries()
     },
   })
 
