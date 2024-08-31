@@ -71,7 +71,7 @@ export const userHeaderColumns: ColumnDef<UserType>[] = [
     enableGlobalFilter: false,
     enableSorting: false,
     enableHiding: true,
-    cell: ({ row }) => <Badge variant={row.original.is_active ? 'default' : 'secondary'}>{row.original.is_active ? 'Active' : 'Inactive'}</Badge>,
+    cell: ({ row }) => <Badge variant={row.original.is_active ? 'outline' : 'secondary'}>{row.original.is_active ? 'Active' : 'Inactive'}</Badge>,
   },
   {
     id: 'cin',
@@ -128,8 +128,9 @@ const UserTableActions = ({ row }: { row: Row<UserType> }) => {
   return (
     <div className='flex items-center justify-end gap-1'>
       <Link href={`/dashboard/users/${row.original.id}`} passHref>
-        <Button variant='secondary' size={'icon'}>
+        <Button variant='primary' className='px-3 gap-2'>
           <Edit3 size={18} />
+          Edit
         </Button>
       </Link>
       <Button variant='secondary' size={'icon'} onClick={() => mutate({ ...row.original, is_active: !row.original.is_active })}>
