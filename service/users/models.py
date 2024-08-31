@@ -17,9 +17,6 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(null=True, blank=True)
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'cin', 'telephone']
-
     groups = models.ManyToManyField(
         Group,
         related_name="custom_user_groups",
@@ -35,6 +32,10 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
         help_text="Specific permissions for this user.",
         verbose_name="user permissions",
     )
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'cin', 'telephone']
+    HIDDEN_FIELDS = ['password', 'groups', 'user_permissions']
 
     def save(self, *args, **kwargs):
         # Check if the password is already hashed (assuming the length of a hashed password is 88)
