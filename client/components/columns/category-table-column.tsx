@@ -40,8 +40,8 @@ export const categoryHeaderColumns: ColumnDef<CategoryType>[] = [
     cell: ({ row }) => {
       // @ts-ignore
       const Icon = Icons[row.original.icon] ?? Icons['ImageOff']
-      if (Icon) return <Icon color={'#dc2626'} size={20} />
-      return <Icon size={20} color={'#475569'} />
+      if (!Icon) return <Icon color={'#dc2626'} size={20} />
+      return <Icon size={20} color={'#343c47'} />
     },
   },
   {
