@@ -67,7 +67,7 @@ export default function Category() {
       push('/dashboard/categories')
     },
     onSettled: () => {
-      queryClient.refetchQueries({ queryKey: ['categories'] })
+      queryClient.invalidateQueries({ queryKey: ['categories'] })
     },
   })
 
