@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { useEffect, type JSX } from 'react'
 import { useRouter } from 'next/router'
 
@@ -5,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
+import { FileInput, FileUploader, FileUploaderContent, FileUploaderItem } from '@/components/ui/file'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 
@@ -13,11 +15,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { userFormSchema, userFormDefaultValues, UserFormType } from '@/schema/user.form'
 
 import { useUsers } from '@/provider/user.provider'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { ChevronLeft } from 'lucide-react'
-import { FileInput, FileUploader, FileUploaderContent, FileUploaderItem } from '@/components/ui/file'
-import Image from 'next/image'
 import { queryClient } from '@/utils/query-client'
+import { useMutation, useQuery } from '@tanstack/react-query'
+
+import { ChevronLeft } from 'lucide-react'
 
 export default function Page(): JSX.Element {
   const { push, query } = useRouter()
