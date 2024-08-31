@@ -9,6 +9,7 @@ urlpatterns = [
     path('api/', include('tasks.url')),
     path('api/', include('users.url')),
     path('auth/', include('guard.url')),
+    path('api/', include('categories.url')),
 ]
 
 if settings.DEBUG:

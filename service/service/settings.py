@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     "components.apps.ComponentsConfig",
     "assembling.apps.AssemblingConfig",
     "tasks.apps.TasksConfig",
-    "guard.apps.GuardConfig"
+    "guard.apps.GuardConfig",
+    "categories.apps.CategoriesConfig"
 ]
 
 MIDDLEWARE = [
