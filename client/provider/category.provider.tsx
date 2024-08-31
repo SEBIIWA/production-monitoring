@@ -2,6 +2,7 @@ import { type JSX, type ReactNode, useContext, useState, useEffect } from 'react
 import { createContext } from 'react'
 
 import { fetcher } from '@/utils/fetch'
+import { useQuery } from '@tanstack/react-query'
 import { CategoryFormType } from '@/schema/category.form'
 import { categoryStore, CategoryStoreType } from '@/provider/store/category.store'
 
@@ -20,9 +21,18 @@ function CategoryProvider({ children }: ComponentProps): JSX.Element {
   const updateCategory = (id: string, data: CategoryFormType) => fetcher.put(`api/categories/${id}/`, { ...data }).then((res) => res.data)
   const deleteCategory = (id: string) => fetcher.delete(`api/categories/${id}/`).then((res) => res.data)
 
+  const { data, isFetched } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getCategories,
+    staleTime: 0,
+    retryOnMount: true,
+  })
+
   useEffect(() => {
-    getCategories().then((data) => setCategories(data))
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    if (isFetched) {
+      setCategories(data)
+    }
+  }, [isFetched]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <CategoriesContext.Provider

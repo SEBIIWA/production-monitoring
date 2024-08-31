@@ -67,7 +67,7 @@ export default function Category() {
       push('/dashboard/categories')
     },
     onSettled: () => {
-      queryClient.invalidateQueries()
+      queryClient.refetchQueries({ queryKey: ['categories'] })
     },
   })
 
@@ -142,7 +142,7 @@ export default function Category() {
                                 <span>{field.value}</span>
                               </div>
                             ) : (
-                              'Select icon'
+                              <p className='text-muted-foreground'>Select icon</p>
                             )}
                             <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                           </Button>
@@ -165,9 +165,9 @@ export default function Category() {
                                       setOpen(false)
                                       setSearchQuery('')
                                     }}>
-                                    <div className='w-full flex items-center justify-between gap-2'>
-                                      <span>{iconName}</span>
+                                    <div className='w-full flex items-center gap-3'>
                                       <LucideIcon size={18} />
+                                      <span>{iconName}</span>
                                     </div>
                                     {field.value === iconName && <Icons.CheckIcon className='ml-auto h-4 w-4 text-primary' />}
                                   </CommandItem>

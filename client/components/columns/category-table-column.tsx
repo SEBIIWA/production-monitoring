@@ -10,7 +10,6 @@ import { CaretSortIcon } from '@radix-ui/react-icons'
 import * as Icons from 'lucide-react'
 import { useCategories } from '@/provider/category.provider'
 
-import { useUsers } from '@/provider/user.provider'
 import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '@/utils/query-client'
 
@@ -63,7 +62,7 @@ export const categoryHeaderColumns: ColumnDef<CategoryType>[] = [
     enableGlobalFilter: false,
     enableHiding: true,
     cell: ({ row }) => {
-      return <Badge variant={row.original.isForComponent ? 'outline' : 'destructive'}>{row.original.isForProduct ? 'Yes' : 'No'}</Badge>
+      return <Badge variant={row.original.isForComponent ? 'outline' : 'destructive'}>{row.original.isForComponent ? 'Yes' : 'No'}</Badge>
     },
   },
   {

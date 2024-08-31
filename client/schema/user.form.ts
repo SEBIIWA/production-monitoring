@@ -1,12 +1,12 @@
 import { z } from 'zod'
 
 export const userFormSchema = z.object({
-  first_name: z.string(),
-  last_name: z.string(),
-  cin: z.string(),
-  telephone: z.string(),
-  username: z.string().max(20),
-  password: z.string().min(6),
+  first_name: z.string().min(1, { message: 'First name is required' }),
+  last_name: z.string().min(1, { message: 'Last name is required' }),
+  cin: z.string().min(1, { message: 'CIN is required' }),
+  telephone: z.string().min(1, { message: 'Telephone is required' }),
+  username: z.string().min(4, { message: 'Username must be at least 4 characters' }).max(20, { message: 'Username must be at most 20 characters' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
   role: z.string().optional().default('EMPLOYEE'),
   profile_picture: z
     .instanceof(File)

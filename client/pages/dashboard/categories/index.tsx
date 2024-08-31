@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/datatable'
 import { useCategories } from '@/provider/category.provider'
 import { categoryHeaderColumns } from '@/components/columns/category-table-column'
+import { CategoryTypeBarChart } from '@/components/charts/category-type-bar-chart'
 
 export default function Page(): JSX.Element {
   const { push } = useRouter()
@@ -36,6 +37,12 @@ export default function Page(): JSX.Element {
           </Button>
         )}
       </div>
+
+      {data && (
+        <div className='gap-4'>
+          <CategoryTypeBarChart categories={data} />
+        </div>
+      )}
 
       {data && data.length === 0 ? (
         <div className='flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm'>
