@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react'
 
-import { Calendar, LayoutDashboard, ListTodo, Users, BarChartBig, Cuboid, Component, Route } from 'lucide-react'
+import { LayoutDashboard, ListTodo, Users, BarChartBig, Cuboid, Component, Route, Backpack } from 'lucide-react'
 
 export type SideBarNavigationType = {
   title: string
@@ -62,12 +62,17 @@ const SIDEBAR_NAVIGATION: SideBarNavigationItem[] = [
     ],
   },
   {
-    section: 'Users',
+    section: 'settings',
     children: [
       {
         title: 'users',
         icon: <Users size={18} />,
         path: '/dashboard/users',
+      },
+      {
+        title: 'categories',
+        icon: <Backpack size={18} />,
+        path: '/dashboard/categories',
       },
     ],
   },

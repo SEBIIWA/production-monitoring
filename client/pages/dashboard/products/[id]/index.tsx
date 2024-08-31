@@ -18,7 +18,7 @@ import { useMutation } from '@tanstack/react-query'
 import { ChevronLeft } from 'lucide-react'
 
 export default function Product(): JSX.Element {
-  const { push } = useRouter()
+  const { push, query } = useRouter()
   const { toast } = useToast()
   const { updateProduct, createProduct, getProduct } = useProducts()
 
@@ -51,14 +51,14 @@ export default function Product(): JSX.Element {
       <main className='h-full flex flex-col gap-6 px-4'>
         <div className='flex items-center justify-between'>
           <div className='space-y-0.5'>
-            <div className='flex items-center gap-2'>
-              <Button variant='outline' size='icon' className='h-7 w-7' onClick={() => push('/dashboard/products')}>
+            <div className='flex items-center gap-4 mb-2'>
+              <Button variant='outline' size='icon' className='h-7 w-7' onClick={() => push('/dashboard/users')}>
                 <ChevronLeft className='h-4 w-4' />
                 <span className='sr-only'>Back</span>
               </Button>
               <h2 className='text-2xl font-bold tracking-tight'>Product</h2>
             </div>
-            <p className='text-muted-foreground'>Create a new product</p>
+            <p className='text-muted-foreground'>{query.id !== 'new' ? 'Update the user' : 'Create a new User'}</p>
           </div>
           <div className='space-x-2'>
             <Button type='reset' variant={'destructive'} onClick={() => form.reset()}>

@@ -8,7 +8,6 @@ import { DataTable } from '@/components/datatable'
 import { useUsers } from '@/provider/user.provider'
 import { userHeaderColumns } from '@/components/columns/user-table-column'
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 export default function Page(): JSX.Element {
   const { push } = useRouter()
