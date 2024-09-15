@@ -34,7 +34,7 @@ export const componentHeaderColumns: ColumnDef<ComponentType>[] = [
         </Avatar>
         <div className='capitalize truncate'>
           <p>{row.original.name}</p>
-          <p className='text-muted-foreground'>{row.original.manufacturer}</p>
+          <p className='text-muted-foreground'>{row.original.model_number}</p>
         </div>
       </div>
     ),
