@@ -41,7 +41,7 @@ const SIDEBAR_NAVIGATION: SideBarNavigationItem[] = [
       {
         title: 'Components',
         icon: <Component size={18} />,
-        path: '/dashboard/components',
+        path: '/dashboard/ingredients',
       },
     ],
   },

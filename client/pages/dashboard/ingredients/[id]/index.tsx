@@ -13,28 +13,28 @@ import { ChevronLeft } from 'lucide-react'
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { productFormSchema, productFormDefaultValues, ProductFormType } from '@/schema/product.form'
+import { componentFormSchema, componentFormDefaultValues, ComponentFormType } from '@/schema/component.form'
 
 import * as Icons from 'lucide-react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useProducts } from '@/provider/product.provider'
+import { useComponents } from '@/provider/component.provider'
 import { useCategories } from '@/provider/category.provider'
 
-export default function Product(): JSX.Element {
+export default function Component(): JSX.Element {
   const { push, query } = useRouter()
   const { toast } = useToast()
-  const { updateProduct, createProduct, getProduct } = useProducts()
+  const { createComponent, updateComponent, getComponent } = useComponents()
   const { categories } = useCategories()
 
-  const form = useForm<ProductFormType>({
-    resolver: zodResolver(productFormSchema),
-    defaultValues: { ...productFormDefaultValues },
+  const form = useForm<ComponentFormType>({
+    resolver: zodResolver(componentFormSchema),
+    defaultValues: { ...componentFormDefaultValues },
     mode: 'onChange',
   })
 
   const { data, status } = useQuery({
-    queryKey: ['product', query.id],
-    queryFn: async () => getProduct(query.id as string),
+    queryKey: ['component', query.id],
+    queryFn: async () => getComponent(query.id as string),
     enabled: query.id !== 'new' && query.id !== undefined,
     staleTime: 0,
   })
@@ -46,20 +46,20 @@ export default function Product(): JSX.Element {
   }, [query.id, status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const { mutate } = useMutation({
-    mutationFn: async (data: ProductFormType) => (query.id === 'new' ? createProduct(data) : updateProduct(query.id as string, data)),
+    mutationFn: async (data: ComponentFormType) => (query.id === 'new' ? createComponent(data) : updateComponent(query.id as string, data)),
     onError: (error) => {
       toast({
         variant: 'destructive',
-        title: 'Error Creating Product',
+        title: 'Error Creating Component',
         description: error.message,
       })
     },
     onSuccess: () => {
       toast({
-        title: 'Product Created',
-        description: 'Product has been successfully created.',
+        title: 'Component Created',
+        description: 'Component has been successfully created.',
       })
-      push('/dashboard/products')
+      push('/dashboard/ingredients')
     },
   })
 
@@ -69,13 +69,13 @@ export default function Product(): JSX.Element {
         <div className='flex items-center justify-between'>
           <div className='space-y-0.5'>
             <div className='flex items-center gap-4 mb-2'>
-              <Button variant='outline' size='icon' className='h-7 w-7' onClick={() => push('/dashboard/products')}>
+              <Button variant='outline' size='icon' className='h-7 w-7' onClick={() => push('/dashboard/ingredients')}>
                 <ChevronLeft className='h-4 w-4' />
                 <span className='sr-only'>Back</span>
               </Button>
-              <h2 className='text-2xl font-bold tracking-tight'>Product</h2>
+              <h2 className='text-2xl font-bold tracking-tight'>Component</h2>
             </div>
-            <p className='text-muted-foreground'>{query.id !== 'new' ? 'Update the product' : 'Create a new product'}</p>
+            <p className='text-muted-foreground'>{query.id !== 'new' ? 'Update the component' : 'Create a new component'}</p>
           </div>
           <div className='space-x-2'>
             <Button type='reset' variant={'destructive'} onClick={() => form.reset()}>
@@ -94,11 +94,11 @@ export default function Product(): JSX.Element {
               name='name'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Name</FormLabel>
+                  <FormLabel>Component Name</FormLabel>
                   <FormControl>
-                    <Input placeholder='Product name' {...field} />
+                    <Input placeholder='component name' {...field} />
                   </FormControl>
-                  <FormDescription>This is the name of the product.</FormDescription>
+                  <FormDescription>This is the name of the component.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -110,9 +110,9 @@ export default function Product(): JSX.Element {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder='Product description' className='resize-none' {...field} />
+                    <Textarea placeholder='component description' className='resize-none' {...field} />
                   </FormControl>
-                  <FormDescription>Provide a brief description of the product.</FormDescription>
+                  <FormDescription>Provide a brief description of the component.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -131,7 +131,7 @@ export default function Product(): JSX.Element {
                     </FormControl>
                     <SelectContent>
                       {categories
-                        .filter((e) => e.isForProduct)
+                        .filter((e) => e.isForComponent)
                         .map((category) => {
                           // @ts-ignore
                           const Icon = Icons[category.icon]
@@ -146,21 +146,7 @@ export default function Product(): JSX.Element {
                         })}
                     </SelectContent>
                   </Select>
-                  <FormDescription>Select the category of the product.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='tva'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>TVA %</FormLabel>
-                  <FormControl>
-                    <Input type='number' placeholder='TVA' {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
-                  </FormControl>
-                  <FormDescription>Enter the TVA percentage.</FormDescription>
+                  <FormDescription>Select the category of the component.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -168,14 +154,29 @@ export default function Product(): JSX.Element {
 
             <FormField
               control={form.control}
-              name='warranty_duration'
+              name='model_number'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Warranty Duration</FormLabel>
+                  <FormLabel>Model Number</FormLabel>
                   <FormControl>
-                    <Input type='number' placeholder='Warranty duration (years)' {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
+                    <Input placeholder='Model number' {...field} />
                   </FormControl>
-                  <FormDescription>Enter the warranty duration in years.</FormDescription>
+                  <FormDescription>This is the model number of the component.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='manufacturer'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Manufacturer</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Component Manufacturer' {...field} />
+                  </FormControl>
+                  <FormDescription>This is the manufacturer of the component.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -184,12 +185,26 @@ export default function Product(): JSX.Element {
           <div className='flex flex-1 flex-col gap-4'>
             <FormField
               control={form.control}
+              name='price'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price</FormLabel>
+                  <FormControl>
+                    <Input type='number' placeholder='Price' {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
+                  </FormControl>
+                  <FormDescription>This is the price of the component. The price should be in TND.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name='ref'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Reference</FormLabel>
+                  <FormLabel>component Reference</FormLabel>
                   <FormControl>
-                    <Input placeholder='P-xxxx' {...field} />
+                    <Input placeholder='C-xxxx' {...field} />
                   </FormControl>
                   <FormDescription>Reference is a unique key and should start with a {"'P'"}.</FormDescription>
                   <FormMessage />
@@ -218,7 +233,7 @@ export default function Product(): JSX.Element {
                       </FileUploaderContent>
                     </FileUploader>
                   </FormControl>
-                  <FormDescription>This is the name of the product.</FormDescription>
+                  <FormDescription>This is the name of the component.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
