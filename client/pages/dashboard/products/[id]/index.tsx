@@ -1,32 +1,49 @@
-import { type JSX } from 'react'
+import Image from 'next/image'
+import { useEffect, type JSX } from 'react'
 import { useRouter } from 'next/router'
 
-import { cn } from '@/utils/tm'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/use-toast'
+import { FileInput, FileUploader, FileUploaderContent, FileUploaderItem } from '@/components/ui/file'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { ChevronLeft } from 'lucide-react'
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { productFormSchema, productFormDefaultValues, ProductFormType } from '@/schema/product.form'
 
+import * as Icons from 'lucide-react'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useProducts } from '@/provider/product.provider'
-import { useMutation } from '@tanstack/react-query'
-import { ChevronLeft } from 'lucide-react'
+import { useCategories } from '@/provider/category.provider'
 
 export default function Product(): JSX.Element {
   const { push, query } = useRouter()
   const { toast } = useToast()
   const { updateProduct, createProduct, getProduct } = useProducts()
+  const { categories } = useCategories()
 
   const form = useForm<ProductFormType>({
     resolver: zodResolver(productFormSchema),
     defaultValues: { ...productFormDefaultValues },
     mode: 'onChange',
   })
+
+  const { data, status } = useQuery({
+    queryKey: ['product', query.id],
+    queryFn: async () => getProduct(query.id as string),
+    enabled: query.id !== 'new' && query.id !== undefined,
+    staleTime: 0,
+  })
+
+  useEffect(() => {
+    if (query.id !== 'new' && status === 'success') {
+      form.reset({ ...data, image: null })
+    }
+  }, [query.id, status]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const { mutate } = useMutation({
     mutationFn: async (data: ProductFormType) => createProduct(data),
@@ -52,7 +69,7 @@ export default function Product(): JSX.Element {
         <div className='flex items-center justify-between'>
           <div className='space-y-0.5'>
             <div className='flex items-center gap-4 mb-2'>
-              <Button variant='outline' size='icon' className='h-7 w-7' onClick={() => push('/dashboard/users')}>
+              <Button variant='outline' size='icon' className='h-7 w-7' onClick={() => push('/dashboard/products')}>
                 <ChevronLeft className='h-4 w-4' />
                 <span className='sr-only'>Back</span>
               </Button>
@@ -106,9 +123,29 @@ export default function Product(): JSX.Element {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Product category' {...field} />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Select a category' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categories
+                        .filter((e) => e.isForProduct)
+                        .map((category) => {
+                          // @ts-ignore
+                          const Icon = Icons[category.icon]
+                          return (
+                            <SelectItem key={category.id} value={`${category.name},${category.icon}`}>
+                              <div className='w-full flex items-center gap-3'>
+                                <Icon size={20} />
+                                {category.name}
+                              </div>
+                            </SelectItem>
+                          )
+                        })}
+                    </SelectContent>
+                  </Select>
                   <FormDescription>Select the category of the product.</FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -128,20 +165,7 @@ export default function Product(): JSX.Element {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name='weight'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Weight</FormLabel>
-                  <FormControl>
-                    <Input type='number' placeholder='Weight' {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
-                  </FormControl>
-                  <FormDescription>Enter the weight of the product in kg.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
             <FormField
               control={form.control}
               name='warranty_duration'
@@ -156,66 +180,49 @@ export default function Product(): JSX.Element {
                 </FormItem>
               )}
             />
+          </div>
+          <div className='flex flex-1 flex-col gap-4'>
             <FormField
               control={form.control}
-              name='warranty_description'
+              name='ref'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Warranty Description</FormLabel>
+                  <FormLabel>Product Reference</FormLabel>
                   <FormControl>
-                    <Textarea placeholder='Warranty description' className='resize-none' {...field} />
+                    <Input placeholder='P-xxxx' {...field} />
                   </FormControl>
-                  <FormDescription>Provide a brief description of the warranty.</FormDescription>
+                  <FormDescription>Reference is a unique key and should start with a {"'P'"}.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
-          <div className='flex flex-col gap-4 flex-1'>
-            <div className='grid grid-cols-3 gap-4'>
-              <FormField
-                control={form.control}
-                name='height'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Height</FormLabel>
-                    <FormControl>
-                      <Input type='number' placeholder='Height' {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
-                    </FormControl>
-                    <FormDescription>Enter the height of the product in cm.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='width'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Width</FormLabel>
-                    <FormControl>
-                      <Input type='number' placeholder='Width' {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
-                    </FormControl>
-                    <FormDescription>Enter the width of the product in cm.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='length'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Length</FormLabel>
-                    <FormControl>
-                      <Input type='number' placeholder='Length' {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
-                    </FormControl>
-                    <FormDescription>Enter the length of the product in cm.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name='image'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Profile Picture</FormLabel>
+                  <FormControl>
+                    <FileUploader value={field.value} onValueChange={field.onChange} dropzoneOptions={{ multiple: false, maxFiles: 1, maxSize: 4 * 1024 * 1024 }}>
+                      <FileInput>
+                        <div className='flex items-center justify-center h-32 w-full border bg-background rounded-md'>
+                          <p className='text-gray-400'>Drop files here</p>
+                        </div>
+                      </FileInput>
+                      <FileUploaderContent className='flex items-center flex-row gap-2'>
+                        {field.value && (
+                          <FileUploaderItem index={1} className='size-20 p-0 rounded-md overflow-hidden'>
+                            <Image src={URL.createObjectURL(field.value)} alt={field.value.name} height={80} width={80} className='size-20 p-0' />
+                          </FileUploaderItem>
+                        )}
+                      </FileUploaderContent>
+                    </FileUploader>
+                  </FormControl>
+                  <FormDescription>This is the name of the product.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
         </aside>
       </main>

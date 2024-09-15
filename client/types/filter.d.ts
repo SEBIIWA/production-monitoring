@@ -1,4 +1,4 @@
-type FilterType = {
+type UserFilterType = {
   role: string
   active: boolean
 }

@@ -13,7 +13,7 @@ export default function Page(): JSX.Element {
   const { push } = useRouter()
   const { getUsers } = useUsers()
 
-  const [filter, setFilter] = useState<FilterType>({} as FilterType)
+  const [filter, setFilter] = useState<UserFilterType>({} as UserFilterType)
 
   const { isLoading, isError, data } = useQuery({
     queryKey: ['users'],

@@ -38,7 +38,7 @@ export default function Page(): JSX.Element {
         )}
       </div>
 
-      {data && (
+      {data && data.length > 5 && (
         <div className='gap-4'>
           <CategoryTypeBarChart categories={data} />
         </div>

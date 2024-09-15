@@ -46,21 +46,7 @@ export default function Index(): JSX.Element {
           </div>
         </div>
       ) : (
-        <div>
-          {data && (
-            <DataTable<ProductType>
-              data={data}
-              columns={productHeaderColumns}
-              filterOptions={[
-                <Button key='btn-status' variant={'ghost'} className='border border-dashed'>
-                  <PlusCircle size={18} className='mr-2' />
-                  Status
-                </Button>,
-              ]}
-              hiddenColumns={['description', 'Updated_At']}
-            />
-          )}
-        </div>
+        <div>{data && <DataTable<ProductType> data={data} columns={productHeaderColumns} hiddenColumns={['description', 'Updated_At']} />}</div>
       )}
     </main>
   )

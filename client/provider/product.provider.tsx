@@ -13,10 +13,32 @@ const ProductsContext = createContext<ProductStoreType>(productStore)
 
 function ProductsProvider({ children }: ComponentProps): JSX.Element {
   const getProducts = async () => await fetcher.get('api/products/').then((res) => res.data)
-  const getProduct = async (id: number) => await fetcher.get(`api/products/${id}`).then((res) => res.data)
-  const createProduct = (data: ProductFormType) => fetcher.post('api/products/', { ...data }).then((res) => res.data)
-  const updateProduct = (id: number, data: ProductFormType) => fetcher.put(`api/products/${id}`, { ...data }).then((res) => res.data)
-  const deleteProduct = (id: number, soft: boolean) => fetcher.delete(`api/products/${id}`).then((res) => res.data)
+  const getProduct = async (id: string) => await fetcher.get(`api/products/${id}/`).then((res) => res.data)
+  const createProduct = (data: ProductFormType) =>
+    fetcher
+      .post(
+        'api/products/',
+        { ...data },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
+      .then((res) => res.data)
+  const updateProduct = (id: string, data: ProductFormType) =>
+    fetcher
+      .patch(
+        `api/products/${id}/`,
+        { ...data },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
+      .then((res) => res.data)
+  const deleteProduct = (id: string) => fetcher.delete(`api/products/${id}/`).then((res) => res.data)
 
   return (
     <ProductsContext.Provider

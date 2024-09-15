@@ -1,5 +1,5 @@
-import { type JSX, type ReactNode, useContext, useState, useEffect } from 'react'
-import { createContext } from 'react'
+import { useRouter } from 'next/router'
+import { type JSX, type ReactNode, useContext, useState, useEffect, createContext } from 'react'
 
 import { fetcher } from '@/utils/fetch'
 import { useQuery } from '@tanstack/react-query'
@@ -13,6 +13,7 @@ interface ComponentProps {
 const CategoriesContext = createContext<CategoryStoreType>(categoryStore)
 
 function CategoryProvider({ children }: ComponentProps): JSX.Element {
+  const { pathname } = useRouter()
   const [categories, setCategories] = useState<CategoryType[]>(categoryStore.categories)
 
   const getCategories = async () => await fetcher.get('api/categories/').then((res) => res.data)
@@ -32,7 +33,7 @@ function CategoryProvider({ children }: ComponentProps): JSX.Element {
     if (isFetched) {
       setCategories(data)
     }
-  }, [isFetched]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isFetched, pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <CategoriesContext.Provider
