@@ -9,6 +9,5 @@ type ProductType = {
   tva: number
   created_at?: string
   updated_at?: string
+  inventory: InventoryType[]
 }
-
-type ProductInventoryType = {}

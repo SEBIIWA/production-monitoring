@@ -13,82 +13,29 @@ import { useProducts } from '@/provider/product.provider'
 import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '@/utils/query-client'
 
-export const productHeaderColumns: ColumnDef<ProductType>[] = [
+export const inventoryHeaderColumns: ColumnDef<InventoryType>[] = [
   {
-    id: 'name',
+    id: 'stock',
     header: ({ column }) => {
       return (
         <div className='flex items-center cursor-pointer' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Product Name
+          Stock
           <CaretSortIcon className='ml-2 h-4 w-4' />
         </div>
       )
     },
-    accessorKey: 'name',
-    cell: ({ row }) => (
-      <div className='flex items-center gap-2'>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <Avatar>
-          <AvatarImage src={row.original.image} />
-          <AvatarFallback className='uppercase'>{`${row.original.name[0]}${row.original.name[1]}`}</AvatarFallback>
-        </Avatar>
-        <div className='capitalize truncate'>{row.original.name}</div>
-      </div>
-    ),
+    accessorKey: 'stock',
     enableGlobalFilter: true,
     enableSorting: true,
     enableHiding: false,
   },
   {
-    id: 'reference',
-    header: 'Ref ID',
-    accessorKey: 'ref',
+    id: 'quantity',
+    header: 'Quantity',
+    accessorKey: 'quantity',
     enableGlobalFilter: true,
     enableSorting: true,
     enableHiding: false,
-  },
-  {
-    id: 'description',
-    header: 'Description',
-    accessorKey: 'description',
-    cell: ({ row }) => <div className='truncate'>{row.original.description}</div>,
-    enableGlobalFilter: false,
-    enableSorting: false,
-    enableHiding: true,
-  },
-  {
-    id: 'category',
-    header: 'Category',
-    accessorKey: 'category',
-    cell: ({ row }) => {
-      // @ts-ignore
-      const Icon = Icons[row.original.category.split(',')[1]]
-      return (
-        <div className='flex items-center gap-2'>
-          <Icon size={20} color={'#343c47'} />
-          {row.original.category.split(',')[0]}
-        </div>
-      )
-    },
-    enableGlobalFilter: false,
-    enableSorting: false,
-    enableHiding: true,
-  },
-  {
-    id: 'tva',
-    header: 'TVA',
-    accessorFn: (row) => `${row.tva}%`,
-    enableGlobalFilter: false,
-    enableSorting: false,
-    enableHiding: true,
-  },
-  {
-    id: 'warranty',
-    header: 'Warranty',
-    accessorFn: (row) => `${row.warranty_duration} years`,
-    enableGlobalFilter: false,
-    enableSorting: false,
-    enableHiding: true,
   },
   {
     id: 'created_at',
@@ -117,7 +64,7 @@ export const productHeaderColumns: ColumnDef<ProductType>[] = [
   },
 ]
 
-const ProductTableActions = ({ row }: { row: Row<ProductType> }) => {
+const ProductTableActions = ({ row }: { row: Row<InventoryType> }) => {
   const { toast } = useToast()
   const { deleteProduct } = useProducts()
 
@@ -143,17 +90,11 @@ const ProductTableActions = ({ row }: { row: Row<ProductType> }) => {
 
   return (
     <div className='flex items-center justify-end gap-1'>
-      <Link href={`/dashboard/products/${row.original.id}`} passHref>
-        <Button variant='primary' className='px-3 gap-2'>
-          <Icons.Edit3 size={18} />
-          Edit
-        </Button>
-      </Link>
-      <Link href={`/dashboard/products/${row.original.id}/detail`} passHref>
-        <Button variant={'outline'} className='px-3 gap-2'>
-          <Icons.Eye size={18} />
-        </Button>
-      </Link>
+      <Button variant='primary' className='px-3 gap-2'>
+        <Icons.Edit3 size={18} />
+        Edit
+      </Button>
+
       <Button variant={'secondary'} className='px-3 gap-2' onClick={() => mutate(row.original.id)}>
         <Icons.Trash2 size={18} />
       </Button>
